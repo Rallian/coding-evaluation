@@ -26,15 +26,17 @@ public abstract class Organization {
 
 
     private Optional<Position> check(Position checkPosition, Name name, String title) {
+        // for first CEO position to add employee
         if(checkPosition.getTitle().equals(title)){
             return addEmp(checkPosition, name);
         }
-        // check title if it matches position title then set employee
+        //loop through direct reports of current position
         for (Position p : checkPosition.getDirectReports()) {
             if (p.getTitle().equals(title)) {
                 return addEmp(p, name);
             } else if (!p.getDirectReports().isEmpty()) {
-                //if title doesn't match, use the new position, and go through the loop again, until a position is found or the collection is exhausted.
+                //if title doesn't match and there are more direct reports, use the new position,
+                // and go through the loop again, until a position is found or the collection is exhausted.
                 Optional<Position> position = check(p, name, title);
                 if (position.isPresent()) {
                     return position;
